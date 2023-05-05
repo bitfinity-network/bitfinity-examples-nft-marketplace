@@ -21,6 +21,7 @@ export function NFTGrid({ data }: { data: NFT[] }) {
         args: [selectedNFT.id, address, selectedNFT.metaPath],
     })
     const selectNft = (nft: NFT) => {
+        setMintingError("")
         setSelectedNFT(nft);
         onOpen()
     }
@@ -90,7 +91,7 @@ export function NFTGrid({ data }: { data: NFT[] }) {
                                     objectFit="contain"
                                 />
                             </Box>
-                            <Box zIndex="1" width="100%" height="100%">
+                            <Box zIndex="1" width="100%" height="100%" overflow="scroll">
                                 <Text
                                     as="p"
                                     marginTop="2"
