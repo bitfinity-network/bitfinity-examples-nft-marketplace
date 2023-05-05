@@ -1,41 +1,63 @@
-import { Box, Button, Flex, Grid, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Grid, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import styles from "./NFT.module.css";
+import { useAccount, useContractWrite } from 'wagmi'
+import RynoNFT from "../../../utils/MyNFT.json"
+import { contractAddress } from '@/utils/constants'
+import { NFT } from '@/types'
+import { NFTItem } from '../NavItem'
 
 
-export default function NFTItem({ nft }) {
-    return (
-        <Box border="1px solid rgba(255, 255, 255, 0.1)" p={2} rounded="md">
-            <Image alt={nft.description} rounded="md" src={`/assets/${nft.imagePath}`} />
-            <Box pt={2}>
-                <Text fontSize="12px" >Token ID #{nft.id}</Text>
-                <Text fontWeight="bold">{nft.name}</Text>
-            </Box>
-            <Box pt={2}>
-                <Box bg="rgba(255, 255, 255, 0.04)" rounded="md" minH="52px">
-                    <Box p="2">
-                        <Text color="rgba(255, 255, 255, 0.6)">Price</Text>
-                        <Text>0.1 ETH</Text>
-                    </Box>
-                </Box>
-            </Box>
-        </Box>
-
-    )
-}
-
-export function NFTGrid({ data }) {
+export function NFTGrid({ data }: { data: NFT[] }) {
+    const toast = useToast()
+    const { address } = useAccount()
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [selectedNFT, setSelectedNFT] = useState(data[0]);
+    const [mintingError, setMintingError] = useState("")
 
-    const selectNft = (nft) => {
+    const { isLoading, isSuccess, writeAsync: mintNFTAsync } = useContractWrite({
+        address: contractAddress,
+        abi: RynoNFT.abi,
+        functionName: 'mintNFT',
+        args: [selectedNFT.id, address, selectedNFT.metaPath],
+    })
+    const selectNft = (nft: NFT) => {
         setSelectedNFT(nft);
         onOpen()
     }
 
+    const mintNFT = async () => {
+        if (address) {
+            try {
+                const result = await mintNFTAsync()
+                toast({
+                    title: 'NFT minted successfully',
+                    description: `You have successfully minted ${selectedNFT.name}`,
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                })
+                onClose()
+
+            } catch (error) {
+                console.log(error)
+                toast({
+                    title: 'Error Minted NFT',
+                    description: `There seems to be an error`,
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                })
+                setMintingError(JSON.stringify(error))
+            }
+        } else {
+
+        }
+
+    }
+
     return (
         <>
-            <Grid templateColumns='repeat(5, 1fr)' gap={6}>
+            <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)', 'repeat(5, 1fr)']} gap={6}>
                 {data.map((nft) => {
                     return (
                         <Box key={nft.id} cursor="pointer" onClick={() => selectNft(nft)}>
@@ -75,8 +97,9 @@ export function NFTGrid({ data }) {
                                     fontSize="lg">
                                     {selectedNFT.description}
                                 </Text>
+                                {mintingError && <Text color="rgba(255, 255, 255, 0.6)" fontSize="11px">{mintingError}</Text>}
                                 <Box pt={5}>
-                                    <Button>Mint Ryno NFT</Button>
+                                    <Button isLoading={isLoading} loadingText='Minting NFT' onClick={() => mintNFT()}>Mint Ryno NFT</Button>
                                 </Box>
                             </Box>
                         </HStack>
