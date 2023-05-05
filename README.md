@@ -1,6 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![nft-interface](https://user-images.githubusercontent.com/23501023/236430141-fbcda395-ebf9-449e-abce-d710d52337dd.png)
 
-## Getting Started
+
+## Ryno NFT Marketplace Template
+This is a react template for an NFT Marketplace made with chakra UI
 
 First, run the development server:
 
