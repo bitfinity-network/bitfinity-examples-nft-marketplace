@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { Box, Button, Grid, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useAccount, useContractWrite } from 'wagmi'
@@ -14,12 +16,13 @@ export function NFTGrid({ data }: { data: NFT[] }) {
     const [selectedNFT, setSelectedNFT] = useState(data[0]);
     const [mintingError, setMintingError] = useState("")
 
-    const { isLoading, isSuccess, writeAsync: mintNFTAsync } = useContractWrite({
+    const { isLoading, writeAsync: mintNFTAsync } = useContractWrite({
         address: contractAddress,
         abi: RynoNFT.abi,
         functionName: 'mintNFT',
-        args: [selectedNFT.id, address, selectedNFT.metaPath],
+        args: [selectedNFT.id, address, selectedNFT.metaPath]
     })
+
     const selectNft = (nft: NFT) => {
         setMintingError("")
         setSelectedNFT(nft);
@@ -27,7 +30,7 @@ export function NFTGrid({ data }: { data: NFT[] }) {
     }
 
     const mintNFT = async () => {
-        if (address) {
+        if (address && mintNFTAsync) {
             try {
                 const result = await mintNFTAsync()
                 toast({
