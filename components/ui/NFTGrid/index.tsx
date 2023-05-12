@@ -1,12 +1,13 @@
 //@ts-nocheck
 
-import { Box, Button, Grid, HStack, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure, useToast } from '@chakra-ui/react'
+import { Box, Grid, useDisclosure, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { useAccount, useContractWrite } from 'wagmi'
 import RynoNFT from "../../../utils/MyNFT.json"
 import { contractAddress } from '@/utils/constants'
 import { NFT } from '@/types'
 import { NFTItem } from '../NavItem'
+import { NFTModal } from '../NFTModal'
 
 
 export function NFTGrid({ data }: { data: NFT[] }) {
@@ -70,49 +71,7 @@ export function NFTGrid({ data }: { data: NFT[] }) {
                     )
                 })}
             </Grid>
-            <Modal isCentered isOpen={isOpen} size="3xl" onClose={onClose}>
-                <ModalOverlay
-                    bg='blackAlpha.300'
-                    backdropFilter='blur(10px)'
-                />
-                <ModalContent>
-                    <ModalHeader>{selectedNFT.name}</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <HStack alignItems="center" gap={5}>
-                            <Box
-                                width={{ base: '100%' }}
-                                zIndex="2"
-                                marginLeft={{ base: '0', sm: '5%' }}
-                                marginTop="5%">
-                                <Image
-                                    borderRadius="lg"
-                                    src={
-                                        "/assets/" + selectedNFT.imagePath
-                                    }
-                                    alt="some good alt text"
-                                    objectFit="contain"
-                                />
-                            </Box>
-                            <Box zIndex="1" width="100%" height="100%" overflow="scroll">
-                                <Text
-                                    as="p"
-                                    marginTop="2"
-                                    fontSize="lg">
-                                    {selectedNFT.description}
-                                </Text>
-                                {mintingError && <Text color="rgba(255, 255, 255, 0.6)" fontSize="11px">{mintingError}</Text>}
-                                <Box pt={5}>
-                                    <Button isLoading={isLoading} loadingText='Minting NFT' onClick={() => mintNFT()}>Mint Ryno NFT</Button>
-                                </Box>
-                            </Box>
-                        </HStack>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button onClick={onClose}>Close</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+            <NFTModal selectedNFT={selectedNFT} isOpen={isOpen} onClose={onClose} mintingError={mintingError} isLoading={isLoading} mintNFT={mintNFT} />
         </>
 
     )

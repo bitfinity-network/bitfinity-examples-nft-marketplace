@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { useAccount, useConnect, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi';
+import { ConnectWalletButton } from '../ConnectWallet';
 
 const NavLink = ({ children }: { children: ReactNode }) => (
     <Link
@@ -38,14 +39,6 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 
 export function Nav() {
     const { colorMode, toggleColorMode } = useColorMode();
-    const { isOpen, onOpen, onClose } = useDisclosure();
-
-    const { address, connector, isConnected } = useAccount()
-    const { data: ensAvatar } = useEnsAvatar({ address })
-    const { data: ensName } = useEnsName({ address })
-    const { connect, connectors, error, isLoading, pendingConnector } =
-        useConnect()
-    const { disconnect } = useDisconnect()
     return (
         <>
             <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -60,38 +53,7 @@ export function Nav() {
                             <Button onClick={toggleColorMode}>
                                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
                             </Button>
-                            {isConnected ?
-                                (
-                                    <Button onClick={() => disconnect()}>
-                                        <HStack>
-                                            {ensAvatar ?? <Image src="metamask.svg" alt="ENS Avatar" />}
-
-                                            <Text isTruncated w="100px">{ensName ? `${ensName} (${address})` : address}</Text>
-                                        </HStack>
-                                    </Button>
-                                )
-                                : (
-
-                                    connectors.map((connector) => (
-                                        <Button
-                                            disabled={!connector.ready}
-                                            key={connector.id}
-                                            onClick={() => connect({ connector })}
-                                        >
-                                            {connector.name}
-                                            {!connector.ready && ' (unsupported)'}
-                                            {isLoading &&
-                                                connector.id === pendingConnector?.id &&
-                                                ' (connecting)'}
-                                        </Button>
-                                    ))
-
-
-
-                                )
-
-
-                            }
+                            <ConnectWalletButton />
                         </Stack>
                     </Flex>
                 </Flex>
