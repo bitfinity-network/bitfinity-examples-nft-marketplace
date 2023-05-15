@@ -3,6 +3,7 @@ import { Box, HStack, Text, Image, Modal, ModalBody, ModalCloseButton, ModalCont
 import React from 'react'
 import { useAccount } from 'wagmi';
 import { ConnectWalletButton } from '../ConnectWallet';
+import { contractAddress } from '@/utils/constants';
 
 interface Props {
     selectedNFT: NFT,
@@ -11,9 +12,11 @@ interface Props {
     mintingError?: string;
     isLoading: boolean;
     mintNFT: () => void;
+    success?: boolean;
+    tokenId?: number;
 }
 
-export function NFTModal({ isLoading, selectedNFT, isOpen, mintingError, onClose, mintNFT }: Props) {
+export function NFTModal({ isLoading, selectedNFT, isOpen, mintingError, onClose, mintNFT, success, tokenId }: Props) {
     const { isConnected } = useAccount()
 
     return (
@@ -48,11 +51,22 @@ export function NFTModal({ isLoading, selectedNFT, isOpen, mintingError, onClose
                                 fontSize="lg">
                                 {selectedNFT.description}
                             </Text>
+
+                            {success && <Box>
+                                <Box pt={5}>
+                                    <Text color="rgba(255, 255, 255, 0.6)" fontSize="14px">Token ID: {tokenId}</Text>
+
+                                </Box>
+                                <Box cursor={"pointer"} pt={2}>
+                                    <Text color="rgba(255, 255, 255, 0.6)" fontSize="12px">{contractAddress}</Text>
+                                </Box>
+                            </Box>}
+
                             {mintingError && <Text color="rgba(255, 255, 255, 0.6)" fontSize="11px">{mintingError}</Text>}
-                            <Box pt={5}>
+                            {!success && <Box pt={5}>
                                 {isConnected ? <Button isLoading={isLoading} loadingText='Minting NFT' onClick={() => mintNFT()}>Mint Ryno NFT</Button> : <ConnectWalletButton />}
 
-                            </Box>
+                            </Box>}
                         </Box>
                     </HStack>
                 </ModalBody>

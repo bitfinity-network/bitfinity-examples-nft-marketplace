@@ -5,8 +5,8 @@ export const BITFINITY_CHAIN = {
     name: "Bitfinity Network",
     network: "Bitfinity Network",
     nativeCurrency: {
-        name: "Ether",
-        symbol: "ETH",
+        name: "BitFinity",
+        symbol: "BFT",
         decimals: 18,
     },
     rpcUrls: {
@@ -16,4 +16,5 @@ export const BITFINITY_CHAIN = {
     //blockExplorerUrls: []
 } as const satisfies Chain;
 
-export const contractAddress = '0xaEc019B04F0EED0A02Ed1353c68D90fE22A9c726'
+// export const contractAddress = '0xdC81a83f93f82240118d350d2CE9ad483CeB3C74'
+export const contractAddress = '0x14419361611f6c8eAf83957747427d76c18F59cd'
