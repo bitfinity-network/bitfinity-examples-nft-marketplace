@@ -1,8 +1,6 @@
-import { contractAddress } from "@/utils/constants";
-import { useContractRead } from "wagmi";
+import { contractAddress } from "@/utils/constants"
+import { useContractRead } from "wagmi"
 import RynoNFT from "../utils/MyNFT.json"
-
-
 
 export const useReadContractHook = (functionName: string, args: any[]) => {
     const { data, ...rest } = useContractRead({
@@ -10,9 +8,7 @@ export const useReadContractHook = (functionName: string, args: any[]) => {
         abi: RynoNFT.abi,
         functionName,
         args,
-        watch: true
+        watch: true,
     })
     return { data, ...rest }
-
 }
-

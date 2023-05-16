@@ -1,14 +1,17 @@
-import { NFT } from '@/types'
-import { Box, Image, Text } from '@chakra-ui/react'
-import React from 'react'
-
+import { NFT } from "@/types"
+import { Box, Image, Text } from "@chakra-ui/react"
+import React from "react"
 
 export function NFTItem({ nft }: { nft: NFT }) {
     return (
         <Box border="1px solid rgba(255, 255, 255, 0.1)" p={2} rounded="md">
-            <Image alt={nft.description} rounded="md" src={`/assets/${nft.imagePath}`} />
+            <Image
+                alt={nft.description}
+                rounded="md"
+                src={`/assets/${nft.imagePath}`}
+            />
             <Box pt={2}>
-                <Text fontSize="12px" >Token ID #{nft.id}</Text>
+                <Text fontSize="12px">Token ID #{nft.id}</Text>
                 <Text fontWeight="bold">{nft.name}</Text>
             </Box>
             <Box pt={2}>
@@ -20,6 +23,5 @@ export function NFTItem({ nft }: { nft: NFT }) {
                 </Box>
             </Box>
         </Box>
-
     )
 }

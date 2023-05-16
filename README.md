@@ -1,7 +1,7 @@
 ![nft-interface](https://user-images.githubusercontent.com/23501023/236430141-fbcda395-ebf9-449e-abce-d710d52337dd.png)
 
-
 ## Ryno NFT Marketplace Template
+
 This is a react template for an NFT Marketplace made with chakra UI
 
 First, run the development server:
@@ -28,8 +28,8 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+-   [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
